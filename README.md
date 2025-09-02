@@ -40,11 +40,18 @@ esac
 
 ## Часовой пояс
 
+<details>
+  <summary>Свернуто в файл <code>overlay-bogdan/etc/profile.d/msk-time.sh</code> </summary>
+        
 ```
 nano /etc/profile
 ```
+
+```
 export TZ=CST-3
 ```
+        
+</details>
 
 
 
@@ -57,6 +64,7 @@ export TZ=CST-3
 
 
 
+<details>
 
 
 # PTP-with-PPS-server
@@ -73,6 +81,7 @@ export TZ=CST-3
 
 ---
 ppscheck - tool to check a serial port for PPS [DESCRIPTION](https://manpages.ubuntu.com/manpages/noble/man8/ppscheck.8.html)
+</details>
 
 ---
 `ldattach pps /dev/ttyS0` [здесь](https://www.crc.id.au/2016/09/24/adding-a-pps-source-to-ntpd/) подробности
