@@ -53,7 +53,15 @@ export TZ=CST-3
         
 </details>
 
+## GPSd
 
+|LuckFox|GPS|
+|---|---|
+|PIN36|	VCC|
+|PIN8|	GND|
+|PIN7|	RX|
+|PIN6|	TX|
+|PIN9|	PPS|
 
 
 
