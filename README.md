@@ -55,6 +55,8 @@ export TZ=CST-3
 
 ## GPSd
 
+![](/luckfox-pinout.png)
+
 |LuckFox|GPS|
 |---|---|
 |PIN36|	VCC|
@@ -63,11 +65,19 @@ export TZ=CST-3
 |PIN6|	TX|
 |PIN9|	PPS|
 
+<details>
+ <summary>Настройки файла <code>overlay-bogdan/etc/init.d/S50gpsd</code></summary>
+        
+Замена `DEVICES="/dev/ttyS1"` на `DEVICES="/dev/ttyS4 -G"`
+        
+</details>
 
+<details>
+ <summary>Создание симлинк gps0 через <code>overlay-bogdan/lib/udev/rules.d/80-gps-to-ntp.rules</code></summary>
 
+`KERNEL=="ttyS4", SUBSYSTEM=="tty", DRIVER=="", SYMLINK+="gps0", MODE="0666"`
 
-
-
+</details>
 
 
 
