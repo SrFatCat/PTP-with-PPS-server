@@ -79,6 +79,7 @@ export TZ=CST-3
 
 </details>
 
+Скорость порта ttyS4 контроллирует overlay-bogdan/etc/init.d/S99sttyS4config
 
 
 
