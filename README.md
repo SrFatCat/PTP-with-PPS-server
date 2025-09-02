@@ -1,4 +1,9 @@
 # LuckFox Config
+## Создание пользователя
+```
+adduser luxfox -G wheel
+```
+
 ## Static IP
 
 ```
@@ -30,6 +35,16 @@ esac
 ```
 
 ```chmod +x S99eth0_staticip ```
+
+Другой способ убить `udhcpc` - в файле `/usr/share/udhcpc/default.script` вставить `exit` в начало
+
+## Часовой пояс
+
+```
+nano /etc/profile
+```
+export TZ=CST-3
+```
 
 
 
