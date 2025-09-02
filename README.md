@@ -1,3 +1,49 @@
+# LuckFox Config
+## Static IP
+
+```
+cd /etc/init.d
+mv S99usb0config S90usb0config 
+mv S99_auto_reboot S90_auto_reboot
+```
+
+```nano S99eth0_staticip```
+
+
+```
+#!/bin/sh
+
+case $1 in
+        start)
+                killall udhcpc
+                ifconfig eth0 192.168.0.200 netmask 255.255.255.0
+                route add default gw 192.168.0.1
+                echo "nameserver 8.8.8.8" > /etc/resolv.conf
+
+                ;;
+        stop)
+                ;;
+        *)
+                exit 1
+                ;;
+esac
+```
+
+```chmod +x S99eth0_staticip ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # PTP-with-PPS-server
 
 
