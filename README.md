@@ -57,7 +57,9 @@ export TZ=CST-3
 </details>
 
 ## GPSd
-
+<details>
+ <summary>Распиновка</summary>
+ 
 ![](/luckfox-pinout.png)
 
 |LuckFox|GPS|
@@ -67,6 +69,9 @@ export TZ=CST-3
 |PIN7|	RX|
 |PIN6|	TX|
 |PIN9|	PPS|
+
+</details>
+
 
 <details>
  <summary>Настройки файла <code>overlay-bogdan/etc/init.d/S50gpsd</code></summary>
