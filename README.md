@@ -5,6 +5,8 @@ adduser luxfox -G wheel
 ```
 
 ## Static IP
+<details>
+ <summary>В файле <code>overlay-bogdan/etc/init.d/S9Aeth0_staticip</code> под катом ручные</summary>
 
 ```
 cd /etc/init.d
@@ -37,6 +39,7 @@ esac
 ```chmod +x S99eth0_staticip ```
 
 Другой способ убить `udhcpc` - в файле `/usr/share/udhcpc/default.script` вставить `exit` в начало
+</details>       
 
 ## Часовой пояс
 
@@ -79,7 +82,44 @@ export TZ=CST-3
 
 </details>
 
-Скорость порта ttyS4 контроллирует overlay-bogdan/etc/init.d/S99sttyS4config
+~~Скорость порта ttyS4 контроллирует `overlay-bogdan/etc/init.d/S99sttyS4config`~~<br />
+Скорость порта в `gpsd` устанавливается ключем `-s`, в `ntp.conf` через `mode #+80` 
+
+## NTPD
+
+Следует посмотреть про `refclock_ppsapi: time_pps_create: Operation not supported` [здесь](https://forums.raspberrypi.com/viewtopic.php?t=375435) - создание символической ссылки /dev/gpspps0 на pps0 <br/>
+[Generic NMEA GPS Receiver](https://www.eecis.udel.edu/~mills/ntp/html/drivers/driver20.html) про настройки baudrate и различные fudge факторы <br />
+
+<details>
+ <summary>Текущие настройки <code>overlay-bogdan/etc/ntp.conf</code></summary>
+        
+```
+# gps0 source
+server 127.127.20.0 mode 24 prefer
+fudge 127.127.20.0 flag1 1
+
+# pps0 source
+server  127.127.22.0    minpoll 4
+fudge   127.127.22.0    flag3 1
+
+```
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -100,7 +140,7 @@ export TZ=CST-3
 
 ---
 ppscheck - tool to check a serial port for PPS [DESCRIPTION](https://manpages.ubuntu.com/manpages/noble/man8/ppscheck.8.html)
-</details>
 
 ---
 `ldattach pps /dev/ttyS0` [здесь](https://www.crc.id.au/2016/09/24/adding-a-pps-source-to-ntpd/) подробности
+</details>
