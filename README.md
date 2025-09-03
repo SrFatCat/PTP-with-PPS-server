@@ -58,7 +58,7 @@ export TZ=CST-3
 
 ## GPSd
 <details>
- <summary>Распиновка</summary>
+ <summary><bold><u>Распиновка</u></bold></summary>
  
 ![](/luckfox-pinout.png)
 
