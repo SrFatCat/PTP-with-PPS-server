@@ -5,7 +5,6 @@
 2. Скопировать и распаковать загрузчик образа на SPI-flash SocToolKit из [вики](https://wiki.luckfox.com/zh/Luckfox-Pico-Plus-Mini/Flash-image) по [ссылке](https://files.luckfox.com/wiki/Luckfox-Pico/Software/SocToolKit_v1.98_20240705_01_win.zip)
 3. После установки драйвера и запуска Загрузчика выбрать `RV1103` (однократно), нажать на Лисе кнопку <kbd>BOOT</kbd>, только после этого подключив ее к USB: (в Загрузчике в поле выбора USB должно пояиться `Maskroom 1хх`).
 4. Нажать <kbd>Search Path</kbd> и выбрать папку с образом, где лежат файлы download.bin, *.img, **env.img**, выбрать все файлы и нажать <kbd>Download<kbd>
-5. При частичном обновлении образа, к примеру только пользовательской части или пользовательских файлов, выбирать не все файлы, а только `Download.bin` и `rootfs`.
    <details><summary>Иллюстрации</summary>
     
    ![](/toolkit1.png)
@@ -13,13 +12,15 @@
    ![](/toolkit2.png)
    </details>
 
+5. При частичном обновлении образа, к примеру только пользовательской части или пользовательских файлов, выбирать не все файлы, а только `Download.bin` и `rootfs`.
 6. При наличии одного файла образа (??) - выбирать только <kbd>Firmware...</kbd> и <kbd>Upgrade</kbd>
    <details><summary>Иллюстрации</summary>
 
     ![](/toolkit3.png)
     </details>
 
- 7. Установка SDK (рекомендуется Ubuntu 22.04)
+ ## Установка SDK 
+Рекомендуется Ubuntu 22.04
 
 ```bash
 sudo apt install -y git ssh make gcc gcc-multilib g++-multilib module-assistant expect g++ gawk texinfo libssl-dev bison flex fakeroot cmake unzip gperf autoconf device-tree-compiler libncurses5-dev pkg-config bc python-is-python3 passwd openssl openssh-server openssh-client vim file cpio rsync
@@ -34,6 +35,15 @@ sudo apt install -y git ssh make gcc gcc-multilib g++-multilib module-assistant 
       ```
       git clone https://gitee.com/LuckfoxTECH/luckfox-pico.git
       ```
+Если SDK устанавливается на WSL2, то для правильного запуска необходимо из путей убирать пробелы (осуществлять запуск например не через `build.sh`, а через [start.sh](/start.sh)
+
+* Порядок полной сборки
+  ```bash
+  #./start.sh --help # помощь
+  ./start.sh lunch # Однократно для выбора платы
+  #./start.sh clean # если уже поковырялись, а надо все пересобрать
+  ./start.sh
+  ```
 
 ## Static IP
 <details>
