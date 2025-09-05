@@ -82,7 +82,7 @@ sudo apt install -y git ssh make gcc gcc-multilib g++-multilib module-assistant 
 ## Настройка образа под задачи
 
 ### Static IP
-<details><summary>В файле <code>overlay-bogdan/etc/init.d/S9Aeth0_staticip</code> под катом ручные</summary>
+<details><summary>В файле <code>overlay-bogdan/etc/init.d/S98eth0staticip</code> под катом ручные</summary>
 
 ```
 cd /etc/init.d
@@ -90,7 +90,7 @@ mv S99usb0config S90usb0config
 mv S99_auto_reboot S90_auto_reboot
 ```
 
-```nano S99eth0_staticip```
+```nano S98eth0staticip```
 
 
 ```
@@ -112,7 +112,7 @@ case $1 in
 esac
 ```
 
-```chmod +x S99eth0_staticip ```
+```chmod +x S97eth0staticip ```
 
 Другой способ убить `udhcpc` - в файле `/usr/share/udhcpc/default.script` вставить `exit` в начало
 </details>       
@@ -123,7 +123,7 @@ esac
   <summary>Свернуто в файл <code>overlay-bogdan/etc/profile.d/msk-time.sh</code> </summary>
         
 ```
-nano /etc/profile
+nano /etc/profile/msk-time.sh
 ```
 
 ```
@@ -150,14 +150,14 @@ export TZ=CST-3
 
 
 <details>
- <summary>Настройки файла <code>overlay-bogdan/etc/init.d/S50gpsd</code></summary>
+ <summary><Настройки файла <code>overlay-bogdan/etc/init.d/S50gpsd</code></summary>
         
 Замена `DEVICES="/dev/ttyS1"` на `DEVICES="/dev/ttyS4 -G"`
         
 </details>
 
 <details>
- <summary>Создание симлинк gps0 через <code>overlay-bogdan/lib/udev/rules.d/80-gps-to-ntp.rules</code></summary>
+ <summary>Создание симлинк gps0 и gpspps0 через <code>overlay-bogdan/lib/udev/rules.d/80-gps-to-ntp.rules</code></summary>
 
    ```
    KERNEL=="ttyS4", SUBSYSTEM=="tty", DRIVER=="", SYMLINK+="gps0", MODE="0666"
@@ -190,7 +190,7 @@ fudge   127.127.22.0    flag3 1
 </details>
 
 ### PTPD2
-Запускать с ключами `-M -i eth0 -f /var/log/ptpd.log`
+Запускать с ключами `-M -i eth0 -f /var/log/ptpd.log`, перенести 'S50ptpd2' ->  'S99ptpd2'
 
 
 
