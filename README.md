@@ -45,9 +45,44 @@ sudo apt install -y git ssh make gcc gcc-multilib g++-multilib module-assistant 
   ./start.sh
   ```
 
-## Static IP
-<details>
- <summary>В файле <code>overlay-bogdan/etc/init.d/S9Aeth0_staticip</code> под катом ручные</summary>
+  Образ будет храниться по адресу `IMAGE/IPC_SPI_NAND_BUILDROOT_RV1103_LUCKFOX_PICO_PLUS_20250518.2049_RELEASE_TEST`
+
+* Сборка только после выборы / изменения приложений 
+  ```bash
+  ./start.sh buildrootconfig # Для поиска приложений в псевдоGUI - нажимать /
+  ./start.sh clean rootfs
+  ./start.sh
+  ```
+
+* Сборка после добавления / изменения пользовательских файлов
+  ```bash
+  ./start firmware
+  ```
+
+  Образ будет храниться по адресу `/output/image` и для загрузки своих файлов нужен только `rootfs.img`
+
+  <details><summary>Добавление своих файлов</summary>
+
+  В папку SDK `project/cfg/BoardConfig_IPC/overlay` добавить свою подпапку `overlay-bogdan` и там разместить дерево с необходимыми файлами
+  ```
+  # например
+  project/cfg/BoardConfig_IPC/overlay/overlay-bogdan/
+  └── etc
+      ├── samba
+      │   ├── smb.conf
+      │   └── smbpasswd
+      ├── shadow
+      └── ssh
+          └── sshd_config
+  ```
+
+  В файле `project/cfg/BoardConfig_IPC/BoardConfig-<boardconfig>-IPS.mk` (boardconfig=SPI_NAND-Buildroot-RV1103_Luckfox_Pico_Plus) найти строчку `export RK_POST_OVERLAY="..."` и в конец добавить ` overlay-bogdan`
+   </details>
+
+## Настройка образа под задачи
+
+### Static IP
+<details><summary>В файле <code>overlay-bogdan/etc/init.d/S9Aeth0_staticip</code> под катом ручные</summary>
 
 ```
 cd /etc/init.d
@@ -82,7 +117,7 @@ esac
 Другой способ убить `udhcpc` - в файле `/usr/share/udhcpc/default.script` вставить `exit` в начало
 </details>       
 
-## Часовой пояс
+### Часовой пояс
 
 <details>
   <summary>Свернуто в файл <code>overlay-bogdan/etc/profile.d/msk-time.sh</code> </summary>
@@ -97,7 +132,7 @@ export TZ=CST-3
         
 </details>
 
-## GPSd
+### GPSd
 <details>
  <summary><b><u>Распиновка</u></b></summary>
  
@@ -131,7 +166,7 @@ export TZ=CST-3
 ~~Скорость порта ttyS4 контроллирует `overlay-bogdan/etc/init.d/S99sttyS4config`~~<br />
 Скорость порта в `gpsd` устанавливается ключем `-s`, в `ntp.conf` через `mode #+80` 
 
-## NTPD
+### NTPD
 
 Следует посмотреть про `refclock_ppsapi: time_pps_create: Operation not supported` [здесь](https://forums.raspberrypi.com/viewtopic.php?t=375435) - создание символической ссылки /dev/gpspps0 на pps0 <br/>
 [Generic NMEA GPS Receiver](https://www.eecis.udel.edu/~mills/ntp/html/drivers/driver20.html) про настройки baudrate и различные fudge факторы <br />
