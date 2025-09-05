@@ -189,7 +189,8 @@ fudge   127.127.22.0    flag3 1
 ```
 </details>
 
-
+### PTPD2
+Запускать с ключами `-M -i eth0 -f /var/log/ptpd.log`
 
 
 
