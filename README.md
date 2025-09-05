@@ -79,6 +79,42 @@ sudo apt install -y git ssh make gcc gcc-multilib g++-multilib module-assistant 
   В файле `project/cfg/BoardConfig_IPC/BoardConfig-<boardconfig>-IPS.mk` (boardconfig=SPI_NAND-Buildroot-RV1103_Luckfox_Pico_Plus) найти строчку `export RK_POST_OVERLAY="..."` и в конец добавить ` overlay-bogdan`
    </details>
 
+## Редактирование DTS под включение ttS4 ttyS3 и KPPS
+
+В SDK [в файл `sysdrv/source/kernel/arch/arm/boot/dts/rv1103g-luckfox-pico-plus.dts`](/rv1103g-luckfox-pico-plus.dts)
+* в раздел `/{` после `compitable = ...` добавить
+  ```
+  pps {
+  	compatible = "pps-gpio";
+  	pinctrl-names = "default";
+  	gpios = <&gpio1 RK_PD2 GPIO_ACTIVE_HIGH>;
+  	status = "okay";
+  };
+  ```
+  
+* после этого в `/**********GPIO**********/`
+  ```
+  /**********GPIO**********/
+  &pinctrl {
+  	gpio1-pd2 {
+  		gpio1_pd2:gpio1-pd2 {
+  			rockchip,pins =	<2 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none>;
+  		};
+  	};
+  };
+  ```
+  
+* затем найти `&uart4 {` и заменить `disable` на `okey`, после тоже самое сделать для `&uart3 {`
+  ```
+   &uart4 {
+	   status = "okay";
+	   pinctrl-names = "default";
+	   pinctrl-0 = <&uart4m1_xfer>;
+   };
+  ```
+
+
+
 ## Настройка образа под задачи
 
 ### Static IP
@@ -150,7 +186,7 @@ export TZ=CST-3
 
 
 <details>
- <summary><Настройки файла <code>overlay-bogdan/etc/init.d/S50gpsd</code></summary>
+ <summary>Настройки файла <code>overlay-bogdan/etc/init.d/S50gpsd</code></summary>
         
 Замена `DEVICES="/dev/ttyS1"` на `DEVICES="/dev/ttyS4 -G"`
         
