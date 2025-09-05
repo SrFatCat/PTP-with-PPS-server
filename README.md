@@ -113,6 +113,13 @@ sudo apt install -y git ssh make gcc gcc-multilib g++-multilib module-assistant 
    };
   ```
 
+* отредактировать настройки ядра ./start.sh kernelconfig
+   ```
+   Device Drivers  --->
+    <*> PPS support  --->
+     <*>   PPS client using GPIO
+   ```
+  
 
 
 ## Настройка образа под задачи
