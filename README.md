@@ -1,8 +1,22 @@
 # LuckFox Config
+## Подготовка toolchain
+
+1. Скопировать и распаковать драйвер из [вики](https://wiki.luckfox.com/zh/Luckfox-Pico-Plus-Mini/Flash-image) по [ссылке](https://files.luckfox.com/wiki/Omni3576/TOOLS/DriverAssitant_v5.13.zip) или [сохраненный](/DriverAssitant_v5.12.zip)
+2. Скопировать и распаковать загрузчик образа на SPI-flash SocToolKit из [вики](https://wiki.luckfox.com/zh/Luckfox-Pico-Plus-Mini/Flash-image) по [ссылке](https://files.luckfox.com/wiki/Luckfox-Pico/Software/SocToolKit_v1.98_20240705_01_win.zip)
+3. После установки драйвера и запуска Загрузчика выбрать `RV1103` (однократно), нажать на Лисе кнопку <kbd>BOOT</kbd>, только после этого подключив ее к USB: (в Загрузчике в поле выбора USB должно пояиться `Maskroom 1хх`).
+4. Нажать <kbd>Search Path</kbd> и выбрать папку с образом, где лежат файлы download.bin, *.img, **env.img**, выбрать все файлы и нажать <kbd>Download<kbd>
+5. При частичном обновлении образа, к примеру только пользовательской части или пользовательских файлов, выбирать не все файлы, а только `Download.bin` и `rootfs`.
+
+<details>
+ <summary>Иллюстрации</summary>
+
+ ![](/toolkit1.png)
+ 
+![](/toolkit2.png)
+</details>
+
+
 ## Создание пользователя
-```
-adduser luxfox -G wheel
-```
 
 ## Static IP
 <details>
@@ -58,7 +72,7 @@ export TZ=CST-3
 
 ## GPSd
 <details>
- <summary><bold><u>Распиновка</u></bold></summary>
+ <summary><b><u>Распиновка</u></b></summary>
  
 ![](/luckfox-pinout.png)
 
