@@ -159,7 +159,10 @@ export TZ=CST-3
 <details>
  <summary>Создание симлинк gps0 через <code>overlay-bogdan/lib/udev/rules.d/80-gps-to-ntp.rules</code></summary>
 
-`KERNEL=="ttyS4", SUBSYSTEM=="tty", DRIVER=="", SYMLINK+="gps0", MODE="0666"`
+   ```
+   KERNEL=="ttyS4", SUBSYSTEM=="tty", DRIVER=="", SYMLINK+="gps0", MODE="0666"
+   KERNEL=="pps0", OWNER="root", GROUP="dialout", MODE="0660", SYMLINK+="gpspps0"
+   ```
 
 </details>
 
