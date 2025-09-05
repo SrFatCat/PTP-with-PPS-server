@@ -15,6 +15,13 @@
 ![](/toolkit2.png)
 </details>
 
+6. При наличии одного файла образа (??) - выбирать только <kbd>Firmware...</kbd> и <kbd>Upgrade</kbd>
+<details>
+ <summary>Иллюстрации</summary>
+
+ ![](/toolkit3.png)
+ </details>
+
 
 ## Создание пользователя
 
