@@ -1,4 +1,4 @@
-# LuckFox Config
+# LuckFox в качестве сервера точного времени и PTP сервера с синхронизацией GPS/PPS
 ## Подготовка toolchain
 
 1. Скопировать и распаковать драйвер из [вики](https://wiki.luckfox.com/zh/Luckfox-Pico-Plus-Mini/Flash-image) по [ссылке](https://files.luckfox.com/wiki/Omni3576/TOOLS/DriverAssitant_v5.13.zip) или [сохраненный](/DriverAssitant_v5.12.zip)
@@ -113,13 +113,19 @@ sudo apt install -y git ssh make gcc gcc-multilib g++-multilib module-assistant 
    };
   ```
 
+Оригинальный [мануал](https://wiki.luckfox.com/Luckfox-Pico/Luckfox-Pico-UART#5-modifying-device-tree) по редактированию DTS
+
 * отредактировать настройки ядра ./start.sh kernelconfig
    ```
    Device Drivers  --->
     <*> PPS support  --->
      <*>   PPS client using GPIO
    ```
-  
+
+* скомпилировать ядро по манулу
+  ```
+  ./start.sh clean kernel
+  ./start 
 
 
 ## Настройка образа под задачи
@@ -195,9 +201,11 @@ export TZ=CST-3
 <details>
  <summary>Настройки файла <code>overlay-bogdan/etc/init.d/S50gpsd</code></summary>
         
-Замена `DEVICES="/dev/ttyS1"` на `DEVICES="/dev/ttyS4 -G"`
+Замена `DEVICES="/dev/ttyS1"` на `DEVICES="/dev/ttyS4 /dev/pps0 -G -s 115200 -n"`
         
 </details>
+
+### NTPD
 
 <details>
  <summary>Создание симлинк gps0 и gpspps0 через <code>overlay-bogdan/lib/udev/rules.d/80-gps-to-ntp.rules</code></summary>
@@ -209,66 +217,46 @@ export TZ=CST-3
 
 </details>
 
-~~Скорость порта ttyS4 контроллирует `overlay-bogdan/etc/init.d/S99sttyS4config`~~<br />
-Скорость порта в `gpsd` устанавливается ключем `-s`, в `ntp.conf` через `mode #+80` 
-
-### NTPD
-
-Следует посмотреть про `refclock_ppsapi: time_pps_create: Operation not supported` [здесь](https://forums.raspberrypi.com/viewtopic.php?t=375435) - создание символической ссылки /dev/gpspps0 на pps0 <br/>
 [Generic NMEA GPS Receiver](https://www.eecis.udel.edu/~mills/ntp/html/drivers/driver20.html) про настройки baudrate и различные fudge факторы <br />
 
 <details>
  <summary>Текущие настройки <code>overlay-bogdan/etc/ntp.conf</code></summary>
         
 ```
+# SHM Возможно ntpd вообще скомпилирован без поддержки драйвера SHM
+# server 127.127.28.0 minpoll 4 maxpoll 4 prefer 
+# fudge 127.127.28.0 refid NMEA
+
 # gps0 source
-server 127.127.20.0 mode 24 prefer
-fudge 127.127.20.0 flag1 1
+# server 127.127.20.0 mode 24 prefer #9600
+server 127.127.20.0 mode 88 prefer #115200
+fudge 127.127.20.0 flag1 1 stratum 1
 
 # pps0 source
-server  127.127.22.0    minpoll 4
+server  127.127.22.0    minpoll 4 true prefer
 fudge   127.127.22.0    flag3 1
+
+# Allow only time queries, at a limited rate, sending KoD when in excess.
+# Allow all local queries (IPv4, IPv6)
+restrict default nomodify nopeer noquery limited kod
+restrict 127.0.0.1
+#restrict [::1]
 
 ```
 </details>
 
+⚠️Необходимо еще поиграть с флагами серверов и fudge, чтобы акцент делался именно на установку времени с NMEA, а уточнение с PPS<br />
+⚠️Возможно GPSD и NTPD с драйвером gps0 ссорятся за порт /ttyS4 (не поддтверждено) и рекомендуется использовать драйвер SHM, который так и не заработал, потому что возможно ntpd скомпилирован без --enable-shm, решение: физически запаралеллить ttyS3 и ttyS4 и развести по разным портам GPSD и NTPD или отказаться от GPSD и получать координаты из clockstat NTPD <br />
+⚠️Возможно SHM замедляет выдачу координат или времени <br />
+
+### Использование Сhrony вместо NTP (как рекомендуют китайцы)
+
+см. файл chrony.conf
+
 ### PTPD2
 Запускать с ключами `-M -i eth0 -f /var/log/ptpd.log`, перенести 'S50ptpd2' ->  'S99ptpd2'
 
+### Инструмент проверки NMEA GPS эмулятор
+Сделан на базе [NMEA-GPS Emulator](https://github.com/luk-kop/nmea-gps-emulator.git) c такими отличиями:
+при запуске с ключем -p (--port) или -b (--baudrate) сразу запускается Serial эмклятор на заданый порт и
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<details>
-
-
-# PTP-with-PPS-server
-
-
-## [DESCRIPTION](https://manpages.debian.org/stretch/pps-tools/ppswatch.8.en.html)
-
-
-### ppstest: PPSAPI interface tester
-### ppsldisc: setup correct RS232 line discipline
-### ppswatch: continuously print PPS timestamps
-### ppsctl: PPS device manager
-### ppsfind: find pps device by name
-
----
-ppscheck - tool to check a serial port for PPS [DESCRIPTION](https://manpages.ubuntu.com/manpages/noble/man8/ppscheck.8.html)
-
----
-`ldattach pps /dev/ttyS0` [здесь](https://www.crc.id.au/2016/09/24/adding-a-pps-source-to-ntpd/) подробности
-</details>
