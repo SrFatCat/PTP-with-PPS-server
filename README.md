@@ -172,7 +172,7 @@ esac
   <summary>Свернуто в файл <code>overlay-bogdan/etc/profile.d/msk-time.sh</code> </summary>
         
 ```
-nano /etc/profile/msk-time.sh
+nano /etc/profile.d/msk-time.sh
 ```
 
 ```
