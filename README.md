@@ -161,7 +161,7 @@ case $1 in
 esac
 ```
 
-```chmod +x S97eth0staticip ```
+```chmod +x S98eth0staticip ```
 
 Другой способ убить `udhcpc` - в файле `/usr/share/udhcpc/default.script` вставить `exit` в начало
 </details>       
@@ -254,7 +254,13 @@ restrict 127.0.0.1
 см. файл chrony.conf
 
 ### PTPD2
-Запускать с ключами `-M -i eth0 -f /var/log/ptpd.log`, перенести 'S50ptpd2' ->  'S99ptpd2'
+Запускать с ключами `-M -i eth0 -f /var/log/ptpd.log`, перенести 'S65ptpd2' ->  'S99ptpd2'
+
+### init.sh 
+[скрипт](init.sh) стартовой корректировки <br />
+```
+ C:\adb\adb.exe shell sh /root/init.sh
+```
 
 ### Инструмент проверки - NMEA GPS эмулятор
 Сделан на базе [NMEA-GPS Emulator](https://github.com/luk-kop/nmea-gps-emulator.git) c такими отличиями:
